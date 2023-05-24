@@ -5,7 +5,8 @@ import streamlit as st
 import pandas as pd
 from nltk import ngrams
 import pymorphy2
-import plotly.graph_objs as go
+#import plotly.graph_objs as go
+import plotly.express as px
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.set_page_config(layout="wide", page_title="Main_diag", page_icon="🏠")  # Полнооконное представление приложения
@@ -64,14 +65,23 @@ def words_pair():
         df = df.drop('Unnamed: 0', axis=1)
         df['Unnamed: 1'] = df['Unnamed: 1'].str.replace('[^\w\s]+', '')
         df['Unnamed: 2'] = df['Unnamed: 2'].str.replace('[^\w\s]+', '')
-        heatmap = go.Heatmap(
-            x=df['Unnamed: 1'],
-            y=df['Unnamed: 2'],
-            z=df['0'],
-            colorscale='brwnyl'
-        )
-        fig = go.Figure(data=[heatmap])
-        fig.show()
+        # Create heatmap using plotly.express
+        df_pivoted = df.pivot(index='Unnamed: 1', columns='Unnamed: 2', values='0')
+
+        # Create heatmap using plotly.express
+        fig = px.imshow(df_pivoted, x=df_pivoted.columns, y=df_pivoted.index)
+        fig.update_layout(title='Пары слов по частоте встречаемости в строке')
+
+        # Display plot using st.plotly_chart
+        st.plotly_chart(fig)
+        #heatmap = go.Heatmap(
+        #    x=df['Unnamed: 1'],
+        #    y=df['Unnamed: 2'],
+        #    z=df['0'],
+        #    colorscale='brwnyl'
+        #)
+        #fig = go.Figure(data=[heatmap])
+        #fig.show()
 
 
 print(words_pair())
