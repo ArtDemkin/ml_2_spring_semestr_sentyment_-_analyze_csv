@@ -1,4 +1,6 @@
 import re
+
+import alt
 import streamlit as st
 import pandas as pd
 from nltk import ngrams
@@ -7,6 +9,8 @@ import plotly.graph_objs as go
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.set_page_config(layout="wide", page_title="Main_diag", page_icon="🏠")  # Полнооконное представление приложения
+alt.themes.enable('streamlit')  # Этот параметр сильно меняет цветовую раскладку, но почему-то без неё не запускается
+# интерактив
 st.write("# Приложение для определения наиболее часто встречающихся пар слов в строке csv файла")
 st.sidebar.success("Меню приложения")
 number = st.number_input('Укажите количество пар слов, которые нужно отобразить:',

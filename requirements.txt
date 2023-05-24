@@ -5,3 +5,5 @@ pymorphy2~=0.9.1
 plotly~=5.14.1
 nltk~=3.8.1
 tensorflow
+
+alt~=0.0.4
