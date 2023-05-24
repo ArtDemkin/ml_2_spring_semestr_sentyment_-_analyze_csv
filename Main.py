@@ -1,6 +1,6 @@
 import re
 
-import alt
+import altair as alt
 import streamlit as st
 import pandas as pd
 from nltk import ngrams
