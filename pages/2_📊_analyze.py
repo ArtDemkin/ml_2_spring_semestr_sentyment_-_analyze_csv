@@ -36,3 +36,6 @@ def sent_str():
     for i, row in enumerate(top_positive_rows, 1):
         st.write(i, "-", row[0])
         st.write("Оценка тональности:", row[1])
+
+
+print(sent_str())
