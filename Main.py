@@ -1,21 +1,18 @@
 import re
 import streamlit as st
 import pandas as pd
-import seaborn as sns
-from matplotlib import pyplot as plt
 from nltk import ngrams
 import pymorphy2
-import plotly.express as px
 import plotly.graph_objs as go
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.set_page_config(layout="wide", page_title="Main_diag", page_icon="🏠")  # Полнооконное представление приложения
-st.write("# Приложение для анализа тональности сообщений в чатах Telegram")
+st.write("# Приложение для определения наиболее часто встречающихся пар слов в строке csv файла")
+st.sidebar.success("Меню приложения")
 number = st.number_input('Укажите количество пар слов, которые нужно отобразить:',
                          min_value=10, max_value=100)
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
-    # Open and write the contents of the uploaded file to a new file on disk
     with open("out.txt", "wb") as f:
         f.write(uploaded_file.getvalue())
     st.write("File saved!")
@@ -33,12 +30,18 @@ morph = pymorphy2.MorphAnalyzer()
 
 
 def lemmatize_word(word):
+    """
+Вспомогательная функция для лемматизауии слов
+    """
     return morph.parse(word)[0].normal_form
 
 
 def words_pair():
+    """
+Основная функция для определения наиболее часто встречающихся пар слов
+    """
     if uploaded_file is not None:
-        df = pd.read_csv(uploaded_file, encoding='utf8', sep='/n', engine='python')
+        df = pd.read_csv(uploaded_file, encoding='utf8', sep='/n', engine='python', header=None)
         d_f = df.squeeze()
         d_f = d_f.str.lower()
         d_f = d_f.str.replace(re.compile(r'http\S+'), '', regex='True')
