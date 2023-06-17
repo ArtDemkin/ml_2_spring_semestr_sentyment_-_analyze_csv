@@ -5,7 +5,6 @@ import streamlit as st
 import pandas as pd
 from nltk import ngrams
 import pymorphy2
-#import plotly.graph_objs as go
 import plotly.express as px
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -58,8 +57,8 @@ def words_pair():
         d_f = d_f.apply(lambda x: ' '.join([lemmatize_word(w) for w in x.split()]))
         df_freq = d_f.apply(count_word_pairs).reset_index()
         n_largest_cols = df_freq.count().nlargest(number + 1)
-        n_largest_cols.to_csv('название_файла.csv')
-        df = pd.read_csv('название_файла.csv', encoding='utf8', sep=',', engine='python')
+        n_largest_cols.to_csv('имя_файла.csv')
+        df = pd.read_csv('имя_файла.csv', encoding='utf8', sep=',', engine='python')
         df = df.drop([0])
         df[['Unnamed: 1', 'Unnamed: 2']] = df['Unnamed: 0'].str.split(' ', expand=True)
         df = df.drop('Unnamed: 0', axis=1)
@@ -74,14 +73,10 @@ def words_pair():
 
         # Display plot using st.plotly_chart
         st.plotly_chart(fig)
-        #heatmap = go.Heatmap(
         #    x=df['Unnamed: 1'],
         #    y=df['Unnamed: 2'],
         #    z=df['0'],
         #    colorscale='brwnyl'
-        #)
-        #fig = go.Figure(data=[heatmap])
-        #fig.show()
 
 
 print(words_pair())
