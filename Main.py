@@ -1,5 +1,4 @@
 import re
-
 import altair as alt
 import streamlit as st
 import pandas as pd
@@ -9,8 +8,7 @@ import plotly.express as px
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.set_page_config(layout="wide", page_title="Main_diag", page_icon="🏠")  # Полнооконное представление приложения
-alt.themes.enable('streamlit')  # Этот параметр сильно меняет цветовую раскладку, но почему-то без неё не запускается
-# интерактив
+alt.themes.enable('streamlit')
 st.write("# Приложение для определения наиболее часто встречающихся пар слов в строке csv файла")
 st.sidebar.success("Меню приложения")
 number = st.number_input('Укажите количество пар слов, которые нужно отобразить:',
@@ -24,7 +22,7 @@ if uploaded_file is not None:
 
 def count_word_pairs(text):
     """
-    Вспомогательная функция, принимает на вход Series и
+    Вспомогательная функция, принимает на вход Series и возвращает количество пар значений Series
     """
     pairs = ngrams(text.split(), 2)
     return pd.Series(pairs).value_counts()
@@ -35,7 +33,7 @@ morph = pymorphy2.MorphAnalyzer()
 
 def lemmatize_word(word):
     """
-Вспомогательная функция для лемматизауии слов
+Вспомогательная мультиязыковая(Rus,En) функция для лемматизауии слов файла из 544 строк
     """
     return morph.parse(word)[0].normal_form
 
@@ -66,17 +64,10 @@ def words_pair():
         df['Unnamed: 2'] = df['Unnamed: 2'].str.replace('[^\w\s]+', '')
         # Create heatmap using plotly.express
         df_pivoted = df.pivot(index='Unnamed: 1', columns='Unnamed: 2', values='0')
-
         # Create heatmap using plotly.express
         fig = px.imshow(df_pivoted, x=df_pivoted.columns, y=df_pivoted.index)
         fig.update_layout(title='Пары слов по частоте встречаемости в строке')
-
-        # Display plot using st.plotly_chart
         st.plotly_chart(fig)
-        #    x=df['Unnamed: 1'],
-        #    y=df['Unnamed: 2'],
-        #    z=df['0'],
-        #    colorscale='brwnyl'
 
 
 print(words_pair())
